@@ -1,0 +1,34 @@
+// Which version of proto?
+syntax = "proto3";
+
+// package == namespace
+package user;
+
+// The User service definition
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+}
+
+// Messages
+message CreateUserRequest {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message CreateUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  bool found = 4;
+}
