@@ -103,3 +103,37 @@ For example, this line: "grpc_response = stub.CreateUser(grpc_request)" does the
 - Sends it over the channel via HTTP/2 to the server.
 - Waits for the response from the server.
 - Deserializes the response bytes into a Python object (grpc_response).
+
+
+**How the code is structured**
+REST_gRPC_Converter/
+│
+├── protos/
+│   └── user.proto                  # Schema definition
+│
+├── user_server.py                  # gRPC server (UserService)
+├── rest_gateway.py                 # REST → gRPC converter (FastAPI)
+│
+├── user_pb2.py                     # Generated protobuf message classes
+├── user_pb2_grpc.py                # Generated gRPC client/server classes
+│
+└── README.md
+
+
+
+**How to run this code**
+Run the gRPC server in Terminal 1:
+python user_service.py
+
+Run the REST gateway in Terminal 2:
+uvicorn rest_gateway:app --reload --port 8000
+
+Test with curl commands:
+Create a user using the following:
+curl -X POST http://localhost:8000/users \
+-H "Content-Type: application/json" \
+-d '{"id":"1","name":"Alice","email":"alice@example.com"}'
+
+Get the same user using the following:
+curl http://localhost:8000/users/1
+
